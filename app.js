@@ -9,9 +9,14 @@ const usersRouter = require("./routes/users");
 
 const app = express();
 
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+const mongoDB =
+  "mongodb+srv://bakermel:VE3Dt45USA5L2Tqy@cluster0.ojxiall.mongodb.net/contact-form-api-dev?retryWrites=true&w=majority&appName=Cluster0";
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect(mongoDB);
+}
 
 app.use(logger("dev"));
 app.use(express.json());
