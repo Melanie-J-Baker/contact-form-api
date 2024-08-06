@@ -3,17 +3,28 @@ const compression = require("compression");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const logger = require("morgan");
 const helmet = require("helmet");
 const dotenv = require("dotenv");
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-const messagesRouter = require("./routes/messages");
+const cors = require("cors");
 
 // get config vars
 dotenv.config();
 
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const messagesRouter = require("./routes/messages");
+
 const app = express();
+
+const RateLimit = require("express-rate-limit");
+const limiter = RateLimit({
+  // Set up rate limiter: max 20 reqs/min
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
+app.use(limiter); // Apply rate limiter to all reqs
 
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
@@ -24,12 +35,15 @@ async function main() {
 }
 
 app.use(compression());
+app.use(bodyParser.json());
 app.use(helmet());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.options("*", cors());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
