@@ -43,6 +43,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+const corsOptions = {
+  origin: "https://melanie-j-baker.github.io",
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+app.use(cors(corsOptions));
+// enable CORS pre-flight
 app.options("*", cors());
 
 app.use("/", indexRouter);
