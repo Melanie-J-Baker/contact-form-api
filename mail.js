@@ -1,24 +1,28 @@
 const nodemailer = require("nodemailer");
-const xoauth2 = require("xoauth2");
-const smtpTransport = require("nodemailer-smtp-transport");
 
-const transport = nodemailer.createTransport(
-  smtpTransport({
-    service: "hotmail",
-    auth: {
-      xoauth2: xoauth2.createXOAuth2Generator({
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      }),
-    },
-  })
-);
+const TOKEN = process.env.TOKEN;
+
+const transport = nodemailer.createTransport({
+  host: process.env.HOST,
+  port: 587,
+  auth: {
+    user: process.env.USER,
+    pass: process.env.TOKEN,
+  },
+});
+
+const sender = {
+  address: process.env.SENDER_EMAIL,
+  name: "Contact form",
+};
+
+const recipients = ["baker_mel@hotmail.com"];
 
 const sendMail = (name, email, text, cb) => {
   const mailOptions = {
     sender: name,
-    from: process.env.SENDER_EMAIL,
-    to: process.env.SENDER_EMAIL,
+    from: sender,
+    to: recipients,
     email: email,
     subject: "Message sent from portfolio contact form!!",
     text: text,
