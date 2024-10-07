@@ -51,7 +51,7 @@ exports.message_create_post = [
       res.json({ errors: errors.array() });
       return;
     } else {
-      sendMail(name, email, text, function (err, data) {
+      sendMail(sender, email, text, function (err, data) {
         if (err) {
           res.status(500).json({ message: "Internal Error" });
         } else {
