@@ -17,8 +17,9 @@ const transport = nodemailer.createTransport(
 const sendMail = (name, email, text, cb) => {
   const mailOptions = {
     sender: name,
-    from: email,
-    to: "baker_mel@hotmail.com",
+    from: process.env.SENDER_EMAIL,
+    to: process.env.SENDER_EMAIL,
+    email: email,
     subject: "Message sent from portfolio contact form!!",
     text: text,
   };
