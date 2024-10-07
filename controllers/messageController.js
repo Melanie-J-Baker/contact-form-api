@@ -1,6 +1,7 @@
 const Message = require("../models/message");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const sendMail = require("../mail");
 
 // Index - return Message count
 exports.index = asyncHandler(async (req, res, next) => {
@@ -50,6 +51,13 @@ exports.message_create_post = [
       res.json({ errors: errors.array() });
       return;
     } else {
+      sendMail(name, email, text, function (err, data) {
+        if (err) {
+          res.status(500).json({ message: "Internal Error" });
+        } else {
+          res.status({ message: "Email sent" });
+        }
+      });
       await message.save();
       res.json({ status: "Message sent" });
     }
