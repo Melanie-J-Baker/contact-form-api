@@ -1,7 +1,5 @@
 const nodemailer = require("nodemailer");
 
-const TOKEN = process.env.TOKEN;
-
 const transport = nodemailer.createTransport({
   host: process.env.HOST,
   port: 587,
