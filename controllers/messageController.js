@@ -51,6 +51,7 @@ exports.message_create_post = [
       res.json({ errors: errors.array() });
       return;
     } else {
+      await message.save();
       sendMail(
         req.body.name,
         req.body.email,
@@ -59,12 +60,10 @@ exports.message_create_post = [
           if (err) {
             res.status(500).json({ message: "Internal Error" });
           } else {
-            res.status({ message: "Email sent" });
+            res.json({ status: "Message sent", data: data });
           }
         }
       );
-      await message.save();
-      res.json({ status: "Message sent" });
     }
   }),
 ];

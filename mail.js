@@ -9,24 +9,21 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const sender = {
-  address: process.env.SENDER_EMAIL,
-  name: "Contact form",
-};
-
-const recipients = ["baker_mel@hotmail.com"];
-
 const sendMail = (name, email, text, cb) => {
   const mailOptions = {
-    sender: name,
-    from: sender,
-    to: recipients,
-    email: email,
-    subject: "Message sent from portfolio contact form!!",
+    from: {
+      address: process.env.SENDER_EMAIL,
+      name: name,
+    },
+    to: "baker_mel@hotmail.com",
+    subject:
+      "Message sent from portfolio contact form. Contact's email: " + email,
     text: text,
   };
+
   transport.sendMail(mailOptions, function (err, data) {
     if (err) {
+      console.error("Error sending email:", err); // Log error
       cb(err, null);
     } else {
       cb(null, data);
