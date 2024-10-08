@@ -18,6 +18,8 @@ const messagesRouter = require("./routes/messages");
 
 const app = express();
 
+app.set("trust proxy", 3);
+
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
   // Set up rate limiter: max 20 reqs/min
